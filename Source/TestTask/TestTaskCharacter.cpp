@@ -78,13 +78,13 @@ void ATestTaskCharacter::BeginPlay()
 
 void ATestTaskCharacter::StartDialog()
 {
-	OnOnDialogChange.Broadcast(true);
+	OnDialogChange.Broadcast(true);
 	//UE_LOG(LogTemp, Display, TEXT("StartDialog"));
 }
 
 void ATestTaskCharacter::EndDialog()
 {
-	OnOnDialogChange.Broadcast(false);
+	OnDialogChange.Broadcast(false);
 	//UE_LOG(LogTemp, Display, TEXT("EndDialog"));
 }
 

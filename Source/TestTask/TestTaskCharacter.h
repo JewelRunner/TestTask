@@ -60,7 +60,7 @@ protected:
 	void Look(const FInputActionValue& Value);
 
 	UPROPERTY(BlueprintAssignable)
-	FOnDialogChange OnOnDialogChange;
+	FOnDialogChange OnDialogChange;
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -74,7 +74,7 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
-	void StartDialog() override;
-	void EndDialog() override;
+	virtual void StartDialog() override;
+	virtual void EndDialog() override;
 };
 
