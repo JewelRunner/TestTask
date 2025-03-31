@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DialogInterface.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "TestTaskCharacter.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDialogChange, bool, bShouldShow);
 
 class USpringArmComponent;
 class UCameraComponent;
@@ -16,7 +19,7 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
-class ATestTaskCharacter : public ACharacter
+class ATestTaskCharacter : public ACharacter, public IDialogInterface
 {
 	GENERATED_BODY()
 
@@ -47,7 +50,7 @@ class ATestTaskCharacter : public ACharacter
 public:
 	ATestTaskCharacter();
 	
-
+	virtual void PossessedBy(AController* NewController) override;
 protected:
 
 	/** Called for movement input */
@@ -55,8 +58,9 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
-			
 
+	UPROPERTY(BlueprintAssignable)
+	FOnDialogChange OnOnDialogChange;
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -69,5 +73,8 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	void StartDialog() override;
+	void EndDialog() override;
 };
 

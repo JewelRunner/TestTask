@@ -9,6 +9,7 @@
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "HUDBase.h"
 #include "InputActionValue.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -54,10 +55,37 @@ ATestTaskCharacter::ATestTaskCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
+void ATestTaskCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	APlayerController* PlayerController = Cast<APlayerController>(NewController);
+
+	if (PlayerController)
+	{		
+		if (AHUDBase* HUDBase = Cast<AHUDBase>(PlayerController->GetHUD()))
+		{
+			HUDBase->InitOverlay();
+		}
+	}
+}
+
 void ATestTaskCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+}
+
+void ATestTaskCharacter::StartDialog()
+{
+	OnOnDialogChange.Broadcast(true);
+	//UE_LOG(LogTemp, Display, TEXT("StartDialog"));
+}
+
+void ATestTaskCharacter::EndDialog()
+{
+	OnOnDialogChange.Broadcast(false);
+	//UE_LOG(LogTemp, Display, TEXT("EndDialog"));
 }
 
 //////////////////////////////////////////////////////////////////////////
